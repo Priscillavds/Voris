@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "games",
+  "info": {
+    "singularName": "game",
+    "pluralName": "games",
+    "displayName": "Game",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "when": {
+      "type": "date"
+    },
+    "where": {
+      "type": "text"
+    },
+    "result": {
+      "type": "string"
+    },
+    "player": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::player.player"
+    }
+  }
+}
