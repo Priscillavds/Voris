@@ -725,12 +725,13 @@ export interface ApiGameGame extends Schema.CollectionType {
     name: Attribute.String;
     when: Attribute.Date;
     where: Attribute.Text;
-    result: Attribute.String;
-    player: Attribute.Relation<
+    result: Attribute.Text;
+    players: Attribute.Relation<
       'api::game.game',
-      'oneToOne',
+      'oneToMany',
       'api::player.player'
     >;
+    image: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

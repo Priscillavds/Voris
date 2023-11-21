@@ -22,12 +22,22 @@
       "type": "text"
     },
     "result": {
-      "type": "string"
+      "type": "text"
     },
-    "player": {
+    "players": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::player.player"
+    },
+    "image": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }
