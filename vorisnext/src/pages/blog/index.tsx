@@ -1,59 +1,95 @@
 import { GetStaticProps } from 'next';
-import Head from 'next/head'
+import Head from 'next/head';
+import { graphql } from "@/gql/index";
+import createApolloClient from '@/apollo-client';
+import { GetAllPostsWithAuthorsQuery, Post } from '@/gql/graphql';
 // import styles from '@/styles/Home.module.css'
-interface Post {
-  id: number; 
-  eventpicture: string;
-  title: string;
-  description: string;
-  publishedAt: string;
-  author: string;
-};
 interface BlogProps {
-  posts: Post[];
+  posts: Post[]
 }
 
-export const getStaticProps: GetStaticProps<BlogProps> = async () => {
-  const response = await fetch(
-    "http://localhost:1338/graphql",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        query: `query {
-          posts{
-            data{ 
-              id
-              attributes{
-                eventpicture{
-                  data{
-                    attributes{
-                      url}
-                  }
-                }
-                title
-                description
-                author{
-                  data{
-                    attributes{
-                      name
-                      last_name
-                      email
-                    }
-                  }
-                }
-                publishedAt
-              }
+const GetAllPostsWithAuthors = graphql(`
+query GetAllPostsWithAuthors {
+  posts{
+    data{ 
+      id
+      attributes{
+        eventpicture{
+          data{
+            attributes{
+              url}
+          }
+        }
+        title
+        description
+        author{
+          data{
+            attributes{
+              name
+              last_name
+              email
             }
           }
-        }`,
-      }),
-      headers: {
-        "Authorization": `Bearer ${process.env.TOKEN}`,
-        "Content-Type": "application/json",
-      },
+        }
+        publishedAt
+      }
     }
-  )
-  let posts = await response.json();
+  }
+}
+`);
+
+export const getStaticProps: GetStaticProps/*<BlogProps>*/ = async () => {
+  // const response = await fetch(
+  //   "http://localhost:1337/graphql",
+  //   {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       query: `query {
+  //         posts{
+  //           data{ 
+  //             id
+  //             attributes{
+  //               eventpicture{
+  //                 data{
+  //                   attributes{
+  //                     url}
+  //                 }
+  //               }
+  //               title
+  //               description
+  //               author{
+  //                 data{
+  //                   attributes{
+  //                     name
+  //                     last_name
+  //                     email
+  //                   }
+  //                 }
+  //               }
+  //               publishedAt
+  //             }
+  //           }
+  //         }
+  //       }`,
+  //     }),
+  //     headers: {
+  //       "Authorization": `Bearer ${process.env.TOKEN}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //   }
+  // );
+  const client = createApolloClient();
+
+  let  {data} = await client.query( {query: GetAllPostsWithAuthors, variables: {}});
+
+  let posts = data.posts?.data.map(entity => ({
+    title: entity.attributes?.title,
+    //eventpicture: entity.attributes?.eventpicture?.data,
+    publishedAt: entity.attributes?.publishedAt
+  }));
+//console.log(posts);
+// const {data} = await client.query({query: GetAllPostsWithAuthors, variables: {}})
+//   let posts = await response.json();
 
   return {
     props:{
@@ -76,8 +112,10 @@ const Blog = ({ posts }: BlogProps) => {
             <ul>
               {posts.map((post) => (
                 <>
-                  <li key={post.id}>{post.title}</li>
-                  <img src={post.eventpicture}></img>
+                  <h2>{post.title}</h2>
+                  {post.publishedAt}
+                  
+                  
                 </>
               ))}
             </ul>
