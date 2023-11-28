@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps<BlogProps> = async () => {
   }
 }
 
-const Blog = () => {
+const Blog = ({ posts }: BlogProps) => {
     return (
         <>
           <Head>
@@ -72,8 +72,15 @@ const Blog = () => {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <main>
-            <h1>Post1</h1>
-              
+            <h1>Blog</h1>
+            <ul>
+              {posts.map((post) => (
+                <>
+                  <li key={post.id}>{post.title}</li>
+                  <img src={post.eventpicture}></img>
+                </>
+              ))}
+            </ul>
     
             
           </main>
