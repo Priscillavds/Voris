@@ -1,6 +1,60 @@
 import Head from 'next/head'
-// import styles from '@/styles/Home.module.css'
-const Players = () => {
+import { graphql } from "@/gql/index";
+import { GetStaticProps } from 'next';
+import createApolloClient from '@/apollo-client';
+
+
+interface Player {
+  firstName: string,
+  lastName: string,
+  picture: string
+}
+
+interface PlayersProps {
+  players: Player[]
+}
+
+const GetAllPlayers = graphql(`
+query GetAllPlayers{
+  players{
+    data{
+      id 
+      attributes{
+        first_name 
+        last_name 
+        picture{
+          data{
+            attributes{
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+}`)
+
+export const getStaticProps: GetStaticProps<PlayersProps> = async () => {
+  const client = createApolloClient();
+
+  let  {data} = await client.query( {query: GetAllPlayers, variables: {}});
+
+  let players : Player[]= data.players!.data.map(entity => ({
+    firstName: entity.attributes?.first_name!,
+    lastName: entity.attributes?.last_name!,
+    picture: entity.attributes?.picture?.data?.attributes?.url!
+  }));
+
+
+  return {
+    props:{
+      players: players
+    }
+  }
+}
+
+
+const Players = ({players}:PlayersProps) => {
     return (
         <>
           <Head>
@@ -10,8 +64,15 @@ const Players = () => {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <main>
-            <h1>Player1</h1>
-              
+            <h1>Spelers</h1>
+            <ul>
+              {players.map((player)=>(
+                <>
+                  <h2>{player.firstName} {player.lastName}</h2>
+                  <img src={player.picture} />
+                </>
+              ))}
+            </ul>
     
             
           </main>

@@ -2,11 +2,16 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { graphql } from "@/gql/index";
 import createApolloClient from '@/apollo-client';
-import { GetAllPostsWithAuthorsQuery, Post } from '@/gql/graphql';
 // import styles from '@/styles/Home.module.css'
+interface Post{
+  title: string,
+  publishedAt: string,
+  author: string
+}
 interface BlogProps {
   posts: Post[]
 }
+
 
 const GetAllPostsWithAuthors = graphql(`
 query GetAllPostsWithAuthors {
@@ -38,58 +43,17 @@ query GetAllPostsWithAuthors {
 }
 `);
 
-export const getStaticProps: GetStaticProps/*<BlogProps>*/ = async () => {
-  // const response = await fetch(
-  //   "http://localhost:1337/graphql",
-  //   {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       query: `query {
-  //         posts{
-  //           data{ 
-  //             id
-  //             attributes{
-  //               eventpicture{
-  //                 data{
-  //                   attributes{
-  //                     url}
-  //                 }
-  //               }
-  //               title
-  //               description
-  //               author{
-  //                 data{
-  //                   attributes{
-  //                     name
-  //                     last_name
-  //                     email
-  //                   }
-  //                 }
-  //               }
-  //               publishedAt
-  //             }
-  //           }
-  //         }
-  //       }`,
-  //     }),
-  //     headers: {
-  //       "Authorization": `Bearer ${process.env.TOKEN}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   }
-  // );
+export const getStaticProps: GetStaticProps<BlogProps> = async () => {
+
   const client = createApolloClient();
 
   let  {data} = await client.query( {query: GetAllPostsWithAuthors, variables: {}});
 
-  let posts = data.posts?.data.map(entity => ({
-    title: entity.attributes?.title,
-    //eventpicture: entity.attributes?.eventpicture?.data,
-    publishedAt: entity.attributes?.publishedAt
+  let posts: Post[] = data.posts!.data.map(entity => ({
+    title: entity.attributes?.title!,
+    publishedAt: entity.attributes?.publishedAt!,
+    author: entity.attributes?.author?.data?.attributes?.name!
   }));
-//console.log(posts);
-// const {data} = await client.query({query: GetAllPostsWithAuthors, variables: {}})
-//   let posts = await response.json();
 
   return {
     props:{
@@ -113,9 +77,8 @@ const Blog = ({ posts }: BlogProps) => {
               {posts.map((post) => (
                 <>
                   <h2>{post.title}</h2>
-                  {post.publishedAt}
-                  
-                  
+                  <p>{post.author}</p>
+                  <p>{post.publishedAt} </p>
                 </>
               ))}
             </ul>
