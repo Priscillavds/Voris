@@ -1,0 +1,40 @@
+.main {
+  padding:0;
+}
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #fe2712;
+  }
+  
+.navbar li {
+    float: left;
+  }
+  
+.navlink:hover {
+    background-color: #be0032;
+  }
+.navlink{
+  display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+/*.activeNavLink{
+  background-color: #be0032;
+}*/
+.footer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #fe2712;
+  }
+.footer li {
+  color: white;
+  text-align: center;
+}
+

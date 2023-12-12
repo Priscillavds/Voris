@@ -1,20 +1,21 @@
 import Link from "next/link"
+import style from "@/styles/App.module.css"
 
 const Navbar = () =>{
     return(
-        <div>
+        <div className={style.navbar}>
             <ul>
                 <li>
-                    <Link href="/">Home</Link>
+                    <Link href="/" className={style.navlink}>Home</Link>
                 </li>
                 <li>
-                    <Link href="/blog">Blog</Link>
+                    <Link href="/blog" className={style.navlink}>Blog</Link>
                 </li>
                 <li>
-                    <Link href="/players">Spelers</Link>
+                    <Link href="/players" className={style.navlink}>Spelers</Link>
                 </li>
                 <li>
-                    <Link href="/games">Wedstrijden</Link>
+                    <Link href="/games" className={style.navlink}>Wedstrijden</Link>
                 </li>
             </ul>
         </div>

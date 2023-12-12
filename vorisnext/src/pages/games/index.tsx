@@ -4,7 +4,7 @@ import { GetStaticProps } from 'next';
 import createApolloClient from '@/apollo-client';
 interface Player {
   firstName: string,
-  lastName: string,
+  lastName: string
 }
 
 interface Games{
@@ -54,21 +54,33 @@ export const getStaticProps: GetStaticProps<GamesProps> = async () => {
 
   let  {data} = await client.query( {query: GetAllGames, variables: {}});
 
-  let players : Games[]= data.games!.data.map(entity => ({
-    name: entity.attributes?.name,
-    lastName: entity.attributes?.last_name!,
-    picture: entity.attributes?.picture?.data?.attributes?.url!
+  let games : Games[]= data.games!.data.map(entity => ({
+    name: entity.attributes?.name!,
+    when: entity.attributes?.when!,
+    where: entity.attributes?.where!,
+    picture: entity.attributes?.image?.data?.attributes?.url!,
+    result: entity.attributes?.result!,
+
+    /*players: entity.attributes?.players!.data.map( player => ({
+      firstName: player.attributes?.first_name!,
+      //lastName: player.attributes?.last_name!
+    }))*/
+
+    // playerFirstName: entity.attributes?.players?.data?.attributes?.first_name!,
+    // playerLastName: entity.attributes?.players?.data?.attributes?.last_name!
   }));
+
+  console.log(games)
 
 
   return {
     props:{
-      players: players
+      games: games
     }
   }
 }
 
-const Games = () => {
+const Games = ({games}: GamesProps) => {
     return (
         <>
           <Head>
@@ -79,12 +91,22 @@ const Games = () => {
           </Head>
           <main>
             <h1>Games</h1>
-              
-    
-            
+            <ul>
+              {games.map((game) => (
+                <>
+                  
+                  <h2>{game.name}</h2>
+                  <p>{game.when}</p>
+                  <p>{game.where} </p>
+                  <p>{game.result} </p>
+                  <img src={game.picture} />
+                  
+                </>
+              ))}
+            </ul>
           </main>
         </>
       )
-}
-
+}//<p>{game.players.firstName} </p>
+//<p>{game.players.lastName} </p>
 export default Games;
