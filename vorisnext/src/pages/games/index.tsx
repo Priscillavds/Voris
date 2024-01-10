@@ -54,20 +54,17 @@ export const getStaticProps: GetStaticProps<GamesProps> = async () => {
 
   let  {data} = await client.query( {query: GetAllGames, variables: {}});
 
+
   let games : Games[]= data.games!.data.map(entity => ({
     name: entity.attributes?.name!,
     when: entity.attributes?.when!,
     where: entity.attributes?.where!,
     picture: entity.attributes?.image?.data?.attributes?.url!,
     result: entity.attributes?.result!,
-
-    /*players: entity.attributes?.players!.data.map( player => ({
+    players: entity.attributes!.players!.data.map( player => ({
       firstName: player.attributes?.first_name!,
-      //lastName: player.attributes?.last_name!
-    }))*/
-
-    // playerFirstName: entity.attributes?.players?.data?.attributes?.first_name!,
-    // playerLastName: entity.attributes?.players?.data?.attributes?.last_name!
+      lastName: player.attributes?.last_name!
+    }))
   }));
 
   console.log(games)
@@ -99,7 +96,10 @@ const Games = ({games}: GamesProps) => {
                   <p>{game.when}</p>
                   <p>{game.where} </p>
                   <p>{game.result} </p>
-                  <img src={game.picture} />
+                  <img src={game.picture} height="700px"/>
+                    {game.players.map((player)=>(
+                      <p>{player.firstName} {player.lastName} </p>
+                    ))}
                   
                 </>
               ))}
@@ -107,6 +107,5 @@ const Games = ({games}: GamesProps) => {
           </main>
         </>
       )
-}//<p>{game.players.firstName} </p>
-//<p>{game.players.lastName} </p>
+}
 export default Games;

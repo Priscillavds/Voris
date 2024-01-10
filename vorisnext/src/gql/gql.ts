@@ -13,6 +13,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\nquery GetAllPostsId{\n  posts{\n    data{\n      id\n    }\n  }\n}\n": types.GetAllPostsIdDocument,
+    "\nquery GetPostById ($id: ID){\n    post(id:$id){\n      data{\n        id\n        attributes{\n          title\n          description\n          eventpicture{\n            data{\n              attributes{\n                url\n              }\n            }\n          }\n          author{\n            data{\n              attributes{\n                name \n                last_name\n              }\n            }\n          }\n          publishedAt\n        }\n      }\n    }\n  }\n": types.GetPostByIdDocument,
     "\nquery GetAllPostsWithAuthors {\n  posts{\n    data{ \n      id\n      attributes{\n        eventpicture{\n          data{\n            attributes{\n              url}\n          }\n        }\n        title\n        description\n        author{\n          data{\n            attributes{\n              name\n              last_name\n              email\n            }\n          }\n        }\n        publishedAt\n      }\n    }\n  }\n}\n": types.GetAllPostsWithAuthorsDocument,
     "\nquery GetAllGames{\n  games{\n    data{\n      id \n      attributes{\n        name\n        when\n        where\n        image{\n          data{\n            attributes{\n              url\n            }\n          }\n        }\n        result\n        players{\n          data{\n            attributes{\n              first_name \n              last_name\n            }\n          }\n        }\n      }\n    }\n  }\n}": types.GetAllGamesDocument,
     "\nquery GetAllPlayers{\n  players{\n    data{\n      id \n      attributes{\n        first_name \n        last_name \n        picture{\n          data{\n            attributes{\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n}": types.GetAllPlayersDocument,
@@ -32,6 +34,14 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nquery GetAllPostsId{\n  posts{\n    data{\n      id\n    }\n  }\n}\n"): (typeof documents)["\nquery GetAllPostsId{\n  posts{\n    data{\n      id\n    }\n  }\n}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nquery GetPostById ($id: ID){\n    post(id:$id){\n      data{\n        id\n        attributes{\n          title\n          description\n          eventpicture{\n            data{\n              attributes{\n                url\n              }\n            }\n          }\n          author{\n            data{\n              attributes{\n                name \n                last_name\n              }\n            }\n          }\n          publishedAt\n        }\n      }\n    }\n  }\n"): (typeof documents)["\nquery GetPostById ($id: ID){\n    post(id:$id){\n      data{\n        id\n        attributes{\n          title\n          description\n          eventpicture{\n            data{\n              attributes{\n                url\n              }\n            }\n          }\n          author{\n            data{\n              attributes{\n                name \n                last_name\n              }\n            }\n          }\n          publishedAt\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -5,6 +5,7 @@ import createApolloClient from '@/apollo-client';
 
 
 interface Player {
+  id: string,
   firstName: string,
   lastName: string,
   picture: string
@@ -40,6 +41,7 @@ export const getStaticProps: GetStaticProps<PlayersProps> = async () => {
   let  {data} = await client.query( {query: GetAllPlayers, variables: {}});
 
   let players : Player[]= data.players!.data.map(entity => ({
+    id: entity.id!,
     firstName: entity.attributes?.first_name!,
     lastName: entity.attributes?.last_name!,
     picture: entity.attributes?.picture?.data?.attributes?.url!
@@ -67,10 +69,10 @@ const Players = ({players}:PlayersProps) => {
             <h1>Spelers</h1>
             <ul>
               {players.map((player)=>(
-                <>
+                <li key={player.id}>
                   <h2>{player.firstName} {player.lastName}</h2>
-                  <img src={player.picture} />
-                </>
+                  <img src={player.picture} height="500px"/>
+                </li>
               ))}
             </ul>
     

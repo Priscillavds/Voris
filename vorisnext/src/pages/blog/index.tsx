@@ -2,8 +2,10 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { graphql } from "@/gql/index";
 import createApolloClient from '@/apollo-client';
+import Link from 'next/link';
 // import styles from '@/styles/Home.module.css'
 interface Post{
+  id: string
   title: string,
   publishedAt: string,
   author: string
@@ -50,6 +52,7 @@ export const getStaticProps: GetStaticProps<BlogProps> = async () => {
   let  {data} = await client.query( {query: GetAllPostsWithAuthors, variables: {}});
 
   let posts: Post[] = data.posts!.data.map(entity => ({
+    id: entity.id!,
     title: entity.attributes?.title!,
     publishedAt: entity.attributes?.publishedAt!,
     author: entity.attributes?.author?.data?.attributes?.name!
@@ -75,11 +78,13 @@ const Blog = ({ posts }: BlogProps) => {
             <h1>Blog</h1>
             <ul>
               {posts.map((post) => (
-                <>
-                  <h2>{post.title}</h2>
-                  <p>{post.author}</p>
-                  <p>{post.publishedAt} </p>
-                </>
+                <li key={post.id} >
+                  <Link href={`/blog/${post.id}`}>
+                    <h2>{post.title}</h2>
+                    <p>{post.author}</p>
+                    <p>{post.publishedAt} </p>
+                  </Link>
+                </li>
               ))}
             </ul>
     
