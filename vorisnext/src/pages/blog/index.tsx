@@ -3,7 +3,9 @@ import Head from 'next/head';
 import { graphql } from "@/gql/index";
 import createApolloClient from '@/apollo-client';
 import Link from 'next/link';
+import style from "@/styles/App.module.css"
 // import styles from '@/styles/Home.module.css'
+
 interface Post{
   id: string
   title: string,
@@ -17,7 +19,7 @@ interface BlogProps {
 
 const GetAllPostsWithAuthors = graphql(`
 query GetAllPostsWithAuthors {
-  posts{
+  posts(sort: "publishedAt:desc"){
     data{ 
       id
       attributes{
@@ -76,15 +78,19 @@ const Blog = ({ posts }: BlogProps) => {
           </Head>
           <main>
             <h1>Blog</h1>
-            <ul>
+            <ul className={style.dotgone}>
               {posts.map((post) => (
+              <div className={style.blogborder}>
                 <li key={post.id} >
-                  <Link href={`/blog/${post.id}`}>
+                  
+                  <Link href={`/blog/${post.id}`}className={style.blog}>
                     <h2>{post.title}</h2>
                     <p>{post.author}</p>
                     <p>{post.publishedAt} </p>
                   </Link>
+                  
                 </li>
+              </div>
               ))}
             </ul>
     

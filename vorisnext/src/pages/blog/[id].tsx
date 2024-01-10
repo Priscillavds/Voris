@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from "querystring";
 import Head from 'next/head';
 import { graphql } from "@/gql/index";
 import createApolloClient from '@/apollo-client';
+import style from "@/styles/App.module.css"
 
 interface Post{
     id: string
@@ -106,10 +107,10 @@ interface Paths extends ParsedUrlQuery {
 
   const Post = ({ post }: PostProps) => {
     return (
-        <div>
+        <div className={style.latestPost}>
             <h1>{post.title}</h1>
-            <p>{post.author} {post.publishedAt}</p>
-            <img src={post.picture} alt="picture of event" />
+            <p><b>{post.author}</b> {post.publishedAt}</p>
+            <img src={post.picture} width={500} />
             <p>{post.description}</p>
         </div>
     );

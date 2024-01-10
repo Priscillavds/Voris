@@ -2,6 +2,8 @@ import Head from 'next/head'
 import { graphql } from "@/gql/index";
 import { GetStaticProps } from 'next';
 import createApolloClient from '@/apollo-client';
+import style from "@/styles/App.module.css"
+
 interface Player {
   firstName: string,
   lastName: string
@@ -67,8 +69,6 @@ export const getStaticProps: GetStaticProps<GamesProps> = async () => {
     }))
   }));
 
-  console.log(games)
-
 
   return {
     props:{
@@ -88,20 +88,21 @@ const Games = ({games}: GamesProps) => {
           </Head>
           <main>
             <h1>Games</h1>
-            <ul>
+            <ul className={style.gamesrow}>
               {games.map((game) => (
-                <>
+                <li key={game.name} className={style.gamescolumn}>
                   
                   <h2>{game.name}</h2>
                   <p>{game.when}</p>
                   <p>{game.where} </p>
                   <p>{game.result} </p>
                   <img src={game.picture} height="700px"/>
+                  <p>Deelnemers:</p>
                     {game.players.map((player)=>(
-                      <p>{player.firstName} {player.lastName} </p>
+                      <li>- {player.firstName} {player.lastName} </li>
                     ))}
                   
-                </>
+                </li>
               ))}
             </ul>
           </main>

@@ -2,13 +2,15 @@ import Head from 'next/head'
 import { graphql } from "@/gql/index";
 import { GetStaticProps } from 'next';
 import createApolloClient from '@/apollo-client';
+import style from "@/styles/App.module.css"
 
 
 interface Player {
   id: string,
   firstName: string,
   lastName: string,
-  picture: string
+  picture: string,
+  description: string
 }
 
 interface PlayersProps {
@@ -23,6 +25,7 @@ query GetAllPlayers{
       attributes{
         first_name 
         last_name 
+        description
         picture{
           data{
             attributes{
@@ -44,7 +47,8 @@ export const getStaticProps: GetStaticProps<PlayersProps> = async () => {
     id: entity.id!,
     firstName: entity.attributes?.first_name!,
     lastName: entity.attributes?.last_name!,
-    picture: entity.attributes?.picture?.data?.attributes?.url!
+    picture: entity.attributes?.picture?.data?.attributes?.url!,
+    description: entity.attributes?.description!
   }));
 
 
@@ -67,12 +71,15 @@ const Players = ({players}:PlayersProps) => {
           </Head>
           <main>
             <h1>Spelers</h1>
-            <ul>
+            <ul className={style.playersrow}>
               {players.map((player)=>(
-                <li key={player.id}>
-                  <h2>{player.firstName} {player.lastName}</h2>
-                  <img src={player.picture} height="500px"/>
-                </li>
+                <div className={style.playerscolumn}> 
+                  <li key={player.id}>
+                    <h2>{player.firstName} {player.lastName}</h2>
+                    <img src={player.picture} height={400}/>
+                    <p>{player.description}</p>
+                  </li>
+                </div>
               ))}
             </ul>
     
