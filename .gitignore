@@ -1,0 +1,56 @@
+# Node.js
+node_modules/
+
+# Next.js build
+.next/
+
+# Environment variables
+.env*
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+logs
+*.log
+
+# Dependency directories
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Cache files
+.cache/
+
+# Temporary files
+*.tmp
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Debug files
+*.stackdump
+
+# Strapi build
+build/
+
+# Environment variables
+.env*
+
+# Database
+tmp/
+exports/
+.dump-*
+database.json
+
+# Configurations
+production.env
